@@ -2,12 +2,20 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import Noteitem from './Noteitem'
 import AddNote from './AddNote';
 import NoteContext from '../Context/notes/Notecontext';
+import { useNavigate } from 'react-router-dom';
 
-const Notes = () => {
-  let context = useContext(NoteContext);
+const Notes = (props) => {
+  let context = useContext(NoteContext); 
+  let navigate = useNavigate();
   let { notes, getNotes,editNote } = context; 
-  useEffect(() => {
-    getNotes();
+  useEffect(() => { 
+    if(localStorage.getItem('token')){
+      getNotes();
+    } 
+    else{ 
+      navigate('/login');
+
+    }
     
   }, [])  
   const ref = useRef(null) ;  
@@ -15,7 +23,8 @@ const Notes = () => {
   let [note,setnote] = useState({ id: " " ,etitle:"",edescription:"",etag:""}) ; 
   const updateNote  = (currentNote)=>{ 
     ref.current.click(); 
-    setnote({ id :currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag});
+    setnote({ id :currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag}); 
+   
 
   }
  
@@ -25,7 +34,8 @@ const Notes = () => {
 const handleClick = (e)=>{  
   e.preventDefault();  
   editNote(note.id,note.etitle,note.edescription,note.etag); 
-  closeref.current.click();  
+  closeref.current.click();   
+  props.showAlert('The note is updated successfully','success')
   
 
 
@@ -33,7 +43,7 @@ const handleClick = (e)=>{
 } 
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert} />
 <button type="button"  className="btn btn-primary d-none" ref={ref} data-bs-toggle="modal" data-bs-target="#exampleModal">
   Launch demo modal
 </button>
@@ -78,7 +88,7 @@ const handleClick = (e)=>{
         <div className="row my-2">
           {
             notes.map((note) => {
-              return <Noteitem key={note._id} updateNote={updateNote} note={note} />
+              return <Noteitem key={note._id} updateNote={updateNote} showAlert={props.showAlert}note={note} />
             })
           }
 

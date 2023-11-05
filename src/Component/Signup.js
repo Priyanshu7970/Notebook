@@ -1,6 +1,6 @@
 import React ,{useState} from 'react' 
 import {useNavigate} from 'react-router-dom'
-const Signup = () => { 
+const Signup = (props) => { 
   let navigate = useNavigate();  
   let [credentials,setcredential] = useState({name:"",email:"",password:"",cpassword:""}) ;
   const handleChange = (e)=>{
@@ -21,20 +21,22 @@ const Signup = () => {
     console.log(json); 
     if(json.success){
       //save the auth token and redirect  
+      props.showAlert("Account creeted Successfully ",'success')
       localStorage.setItem('token',json.authtoken) 
       navigate('/');
 
 
     } 
     else{
-      alert('Invalid credentails')
+      props.showAlert("Invalid credential",'danger')
     }
       
   } 
   return ( 
     <div> 
       <form  onSubmit={handleSubmit}>
-  <div className="mb-3">
+  <div className="mb-3"> 
+  <h1>Create a new Account </h1>
     <label htmlFor="name" className="form-label">Name</label>
     <input type="text" className="form-control" id="name" value={credentials.name} onChange={handleChange} name="name" aria-describedby="emailHelp"/>
 

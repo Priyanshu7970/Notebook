@@ -76,7 +76,7 @@ router.delete('/deletenote/:id',fetchuser,async(req,res)=>{
              return res.status(401).send("Unauthorized user for deletion");
         } 
         note = await Note.findByIdAndDelete(req.params.id); 
-        res.send("The note is deleted successfully"); 
+        res.send({success :"The note is deleted successfully"}); 
         
 
     } 
@@ -88,4 +88,4 @@ router.delete('/deletenote/:id',fetchuser,async(req,res)=>{
 
 })
 
-module.exports = router 
+module.exports = router  ;
