@@ -1,9 +1,9 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const Login = (props) => {  
   let [credentials,setcredential] = useState({email:"",password:""}) ; 
-  let navigate = useNavigate();
+    console.log("Hii I am login Page");
     const handleSubmit = async(e)=>{ 
       e.preventDefault(); 
       const response = await fetch(`http://localhost:5000/api/auth/login`, {
@@ -16,7 +16,7 @@ const Login = (props) => {
       })   
       
       const json = await response.json(); 
-      console.log(json); 
+      console.log(json);  
       if(json.success){ 
 
         //save the auth token and redirect   
@@ -26,7 +26,7 @@ const Login = (props) => {
 
 
       } 
-      else{
+      else{ 
         props.showAlert("Invalid Credential" ,'danger')
       }
         
